@@ -1,22 +1,22 @@
-/**
- * Creates a temp code file and runs it
+/*
 
-example question record
-{
-  functionName: 'foo($a, $b, $c)',
-  testInputs: [
-    {"$a": 123, "$b": 456, "$c": 567, "result": false, "msg": "Testing 123"}
-  ]
-}
+  Creates a temp code file and runs it
 
-testing with:
-POST /answers/run HTTP/1.1
-Host: localhost:3000
-Cache-Control: no-cache
-Content-Type: application/x-www-form-urlencoded
+  example question record
+  {
+    functionName: 'main($a, $b)',
+    testInputs: [
+      {"$a": 10, "$b": 4, "result": 14, "msg": "10 + 4 = 14"}
+    ]
+  }
 
-questionId=1&userId=2&input=function+main(%24a%2C+%24b)+%7B+return+%24a+-+%24b%3B+%7D&testInputs=%5B+++++%7B%22%24a%22%3A+123%2C+%22%24b%22%3A+456%2C+%22%24c%22%3A+567%2C+%22results%22%3A+false%2C+%22msg%22%3A+%22Testing+123%22%7D+++%5D
+  testing with:
+  POST /answers/run HTTP/1.1
+  Host: localhost:3000
+  Cache-Control: no-cache
+  Content-Type: application/x-www-form-urlencoded
 
+  questionId=1&userId=2&input=function+main(%24a%2C+%24b)+%7B+return+%24a+-+%24b%3B+%7D&testInputs=%5B+++++%7B%22%24a%22%3A+123%2C+%22%24b%22%3A+456%2C+%22%24c%22%3A+567%2C+%22results%22%3A+false%2C+%22msg%22%3A+%22Testing+123%22%7D+++%5D
 
 */
 var temp = require('temp-write'),
@@ -38,7 +38,8 @@ module.exports = function (input, func, tests, cb) {
         stderr) {
 
         // Remove the temp file path from any errors
-        var output = stdout.trim();
+        var output = stdout.trim().replace(path, 'your code').replace(
+          '/private', '');
         var errors = stderr.trim().replace(path, 'your code').replace(
           '/private', '');
         cb(null, interpretResults(output, errors));
@@ -49,7 +50,9 @@ module.exports = function (input, func, tests, cb) {
 }
 
 function buildContent(input, func, tests) {
-  var content = "<?php\n\n" + input; + "\n\n\n";
+  // Strip php tags and re-add our own
+  var content = "<?php\n\n" + input.replace('<?php', '').replace('?>', '') +
+    "\n\n\n";
   for (var i = 0, j = tests.length; i < j; i++) {
     var test = tests[i];
 
@@ -73,9 +76,8 @@ function interpretResults(output, error) {
     error: error
   };
 
-  // We will only get php errors from stderr
-  // (as opposed to printing the word 'Error')
-  if (error.length > 0) {
+  // @TODO better error detection and smarter response messages
+  if (error.length > 0 || output.match(/Warning|Error/)) {
     decision.isSuccessful = false;
   }
 

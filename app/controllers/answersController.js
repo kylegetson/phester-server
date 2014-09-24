@@ -55,7 +55,7 @@ AnswersController.run = function () {
 };
 
 
-AnswersController.run = function () {
+AnswersController.submit = function () {
   var self = this;
   var params = this.req.body;
 
