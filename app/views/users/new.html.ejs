@@ -1,0 +1,26 @@
+<div class="notice"><%= messages.error ? messages.error : '' %></div>
+<form action="/users" method="POST">
+
+  <label for="user_username">Username:
+   <input type="text" name="username"
+    id="user_username" value="">
+  </label>
+
+  <label for="user_password">Password:
+    <input type="password" id="user_password" name="password" value="">
+  </label>
+
+  <label for="user_email">Email:
+    <input type="text" name="email"
+      id="user_email" value="">
+  </label>
+
+  <label for="user_admin">Admin:
+    <select name="isAdmin" id="user_admin">
+      <option value="0">No</option>
+      <option value="1">Yes</option>
+    </select>
+  </label>
+
+  <input type="submit" name="Save">
+</form>

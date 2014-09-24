@@ -1,0 +1,30 @@
+
+  <label for="user_id">Name:
+   <input type="text" readonly="readonly" disabled="disabled"
+    id="user_username" value="<%= user.id %>">
+  </label>
+
+  <label for="user_username">Username:
+   <input type="text" name="username"
+    id="user_username" value="<%= user.username %>">
+  </label>
+
+  <label for="user_password">Password:
+    <input type="password" id="user_password" value="">
+  </label>
+
+  <label for="user_email">Email:
+    <input type="text" name="email"
+      id="user_email" value="<%= user.email %>">
+  </label>
+
+  <label for="user_admin">Admin:
+    <select name="isAdmin" id="user_admin">
+      <option value="0"
+      <%= user.isAdmin ? "selected='selected'" : "" %>
+      >No</option>
+      <option value="1"
+      <%= user.isAdmin ? "selected='selected'" : "" %>
+      >Yes</option>
+    </select>
+  </label>

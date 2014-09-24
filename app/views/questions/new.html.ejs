@@ -1,0 +1,30 @@
+<div class="notice"><%= messages.error ? messages.error : '' %></div>
+<form action="/questions" method="POST">
+
+  <label for="question_name">Name:
+   <input type="text" name="name"
+    id="question_name" value="">
+  </label>
+
+  <label for="question_description">Question Text:
+    <textarea name="description"
+      id="question_description"></textarea>
+  </label>
+
+  <label for="question_entryFunction">Entry Function Name:
+    <input type="text" name="entryFunction"
+      id="question_entryFunction" value="">
+  </label>
+
+  <label for="question_sampleInput">Sample Input/Output:
+    <textarea name="sampleInput"
+      id="question_sampleInput"></textarea>
+  </label>
+
+  <label for="question_testInput">Test Input/Output:
+    <textarea name="testInput"
+      id="question_testInput"></textarea>
+  </label>
+
+  <input type="submit" name="Save">
+</form>
