@@ -23,12 +23,11 @@ var temp = require('temp-write'),
   fs = require('fs'),
   util = require('util'),
   exec = require('child_process').exec,
-  binpath = process.env.PHP_PATH || '/usr/bin/php';
+  binpath = process.env.PHP_PATH || '/usr/local/bin/php';
 
 module.exports = function (input, func, tests, cb) {
 
   var content = buildContent(input, func, tests);
-
   temp(content, function (err, path) {
     if (err) {
       return cb(err);
@@ -77,7 +76,8 @@ function interpretResults(output, error) {
   };
 
   // @TODO better error detection and smarter response messages
-  if (error.length > 0 || output.match(/Warning|Error/)) {
+  if (error.length > 0 || output.match(/Warning|Error/i) || output.match(
+    /assert\(\)\: .* failed in your code/i)) {
     decision.isSuccessful = false;
   }
 
