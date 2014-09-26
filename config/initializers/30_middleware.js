@@ -23,6 +23,10 @@ module.exports = function () {
 
   var secret = 'Gold3nD00rCOOK!eZZ';
   this.use(poweredBy('Locomotive'));
+  this.use(function(req, res, next) {
+    res.set('Access-Control-Allow-Origin', '*');
+    next();
+  });
   this.use(favicon(__dirname + '/../../public/favicon.ico'));
   this.use(express.static(__dirname + '/../../public'));
   this.use(bodyParser.urlencoded({

@@ -13,7 +13,9 @@ function ensureAdmin(req, res, next) {
       res.send(403);
     }
   }
-  return next();
+  else {
+    return next();
+  }
 }
 
 function ensureLoggedIn(req, res, next) {
@@ -25,5 +27,7 @@ function ensureLoggedIn(req, res, next) {
       res.send(403);
     }
   }
-  return next();
+  else {
+    return next();
+  }
 }

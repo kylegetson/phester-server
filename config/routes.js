@@ -7,6 +7,25 @@ module.exports = function routes() {
     failureRedirect: '/login'
   });
 
+  var authJson = function(req, res, next) {
+    passport.authenticate('local', function(err, user, info) {
+      if (err) { return next(err); }
+      if (!user) {
+        return res.send(403);
+      }
+
+      req.logIn(user, function(err) {
+        if (err) { return next(err); }
+
+        return res.json({
+          username: user.username,
+          isAdmin: user.isAdmin,
+          email: user.email
+        });
+      });
+    })(req, res, next);
+  };
+
   /**
    * Default
    */
@@ -25,6 +44,7 @@ module.exports = function routes() {
   this.match('logout', 'pages#logout');
   this.match('whoami', 'pages#whoami');
   this.post('login', auth);
+  this.post('login.json', authJson);
 
 
   /**
